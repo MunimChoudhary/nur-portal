@@ -26,6 +26,18 @@ const AZKAR_DATA: Record<string, Zikr[]> = {
       english: "I seek the forgiveness of Allah and repent to Him.",
       target: 100,
     },
+    {
+      id: "m3",
+      arabic: "اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ",
+      english: "O Allah, by You we enter the morning and by You we enter the evening, by You we live and by You we die, and to You is the Final Return.",
+      target: 1,
+    },
+    {
+      id: "m4",
+      arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ",
+      english: "O Allah, You are my Lord, there is none worthy of worship but You. You created me and I am your slave. I keep Your covenant, and my pledge to You so far as I am able. (Sayyid al-Istighfar)",
+      target: 1,
+    }
   ],
   evening: [
     {
@@ -34,12 +46,44 @@ const AZKAR_DATA: Record<string, Zikr[]> = {
       english: "Glory is to Allah and praise is to Him.",
       target: 100,
     },
+    {
+      id: "e2",
+      arabic: "اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ",
+      english: "O Allah, by You we enter the evening and by You we enter the morning, by You we live and by You we die, and to You is the Final Return.",
+      target: 1,
+    }
   ],
   after_salah: [
     { id: "s1", arabic: "سُبْحَانَ ٱللَّٰهِ", english: "Glory be to Allah", target: 33 },
     { id: "s2", arabic: "ٱلْحَمْدُ لِلَّٰهِ", english: "Praise be to Allah", target: 33 },
     { id: "s3", arabic: "ٱللَّٰهُ أَكْبَرُ", english: "Allah is the Greatest", target: 34 },
+    { 
+      id: "s4", 
+      arabic: "لا إلهَ إلاّ اللّهُ وَحْـدَهُ لا شريكَ لهُ، لهُ المُلكُ ولهُ الحَمْد، وهُوَ على كلّ شَيءٍ قَدير", 
+      english: "None has the right to be worshipped but Allah alone, He has no partner, His is the dominion and His is the praise, and He is Able to do all things.", 
+      target: 1 
+    }
   ],
+  quranic_duas: [
+    {
+      id: "q1",
+      arabic: "رَبِّ إِنِّي لِمَا أَنزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ",
+      english: "My Lord, indeed I am, for whatever good You would send down to me, in need. (Al-Qasas 28:24)",
+      target: 7,
+    },
+    {
+      id: "q2",
+      arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+      english: "Our Lord, give us in this world [that which is] good and in the Hereafter [that which is] good and protect us from the punishment of the Fire. (Al-Baqarah 2:201)",
+      target: 7,
+    },
+    {
+      id: "q3",
+      arabic: "رَّبِّ زِدْنِي عِلْمًا",
+      english: "My Lord, increase me in knowledge. (Taha 20:114)",
+      target: 7,
+    }
+  ]
 };
 
 function ZikrCounter({ zikr }: { zikr: Zikr }) {

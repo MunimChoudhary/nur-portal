@@ -53,10 +53,10 @@ export function useGeolocation() {
             errorMessage = "Location access denied. Using default coordinates (Mecca).";
             break;
           case error.POSITION_UNAVAILABLE:
-            errorMessage = "Location information is unavailable.";
+            errorMessage = "Location information is unavailable. Using default coordinates (Mecca).";
             break;
           case error.TIMEOUT:
-            errorMessage = "The request to get user location timed out.";
+            errorMessage = "The request to get user location timed out. Using default coordinates (Mecca).";
             break;
         }
         setState({
@@ -66,9 +66,9 @@ export function useGeolocation() {
         });
       },
       {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
+        enableHighAccuracy: false, // Desktop devices often timeout when this is true
+        timeout: 15000, // Increased timeout to 15 seconds
+        maximumAge: 1000 * 60 * 60 * 24, // Cache location for 24 hours to prevent repeated slow lookups
       }
     );
   }, []);

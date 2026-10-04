@@ -37,17 +37,33 @@ interface SurahDetails {
 
 function VerseCard({ ayah, index, englishText }: { ayah: Ayah; index: number; englishText?: string }) {
   const { isPlaying, progress, togglePlay } = useAudio(ayah.audio);
+  const [isHighlighted, setIsHighlighted] = useState(false);
+
+  const isActive = isPlaying || isHighlighted;
 
   return (
-    <Card className="relative overflow-hidden group">
+    <Card 
+      className={cn(
+        "relative overflow-hidden group cursor-pointer transition-all duration-300",
+        isActive ? "border-primary/50 shadow-md shadow-primary/10 ring-1 ring-primary/30 bg-primary/5" : "hover:border-primary/30"
+      )}
+      onClick={() => setIsHighlighted(!isHighlighted)}
+    >
       <CardContent className="p-8">
         <div className="flex justify-between items-start mb-6">
-          <div className="flex items-center justify-center h-10 w-10 rounded-full border border-primary/30 text-primary font-medium text-sm">
+          <div className={cn(
+            "flex items-center justify-center h-10 w-10 rounded-full border transition-colors text-sm font-medium",
+            isActive ? "border-primary bg-primary text-primary-foreground" : "border-primary/30 text-primary"
+          )}>
             {ayah.numberInSurah}
           </div>
           <button
-            onClick={togglePlay}
-            className="p-2 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors focus:outline-none"
+            onClick={(e) => {
+              e.stopPropagation();
+              togglePlay();
+              if (!isPlaying && !isHighlighted) setIsHighlighted(true);
+            }}
+            className="p-2 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors focus:outline-none z-10 relative"
             aria-label={isPlaying ? "Pause audio" : "Play audio"}
           >
             {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5 ml-0.5" />}
@@ -55,14 +71,20 @@ function VerseCard({ ayah, index, englishText }: { ayah: Ayah; index: number; en
         </div>
         
         <div className="text-right mb-6">
-          <p className="font-amiri text-4xl leading-loose text-foreground" dir="rtl">
+          <p className={cn(
+            "font-amiri text-4xl leading-loose transition-colors",
+            isActive ? "text-primary" : "text-foreground"
+          )} dir="rtl">
             {ayah.text}
           </p>
         </div>
 
         {englishText && (
           <div className="text-left border-t border-card-border pt-4">
-            <p className="font-playfair text-lg text-foreground/80 leading-relaxed">
+            <p className={cn(
+              "font-playfair text-lg leading-relaxed transition-colors",
+              isActive ? "text-foreground" : "text-foreground/80"
+            )}>
               {englishText}
             </p>
           </div>
@@ -179,13 +201,32 @@ export function QuranReader() {
             exit={{ opacity: 0 }}
             className="space-y-8"
           >
-            <button
-              onClick={() => setSelectedSurah(null)}
-              className="flex items-center text-sm text-foreground/70 hover:text-primary transition-colors mb-6"
-            >
-              <ChevronRight className="h-4 w-4 mr-1 rotate-180" />
-              Back to Surah List
-            </button>
+            <div className="flex flex-col sm:flex-row items-center justify-between mb-6 space-y-4 sm:space-y-0">
+              <button
+                onClick={() => setSelectedSurah(null)}
+                className="flex items-center text-sm font-medium text-foreground/70 hover:text-primary transition-colors"
+              >
+                <ChevronRight className="h-4 w-4 mr-1 rotate-180" />
+                Back to Surahs
+              </button>
+              
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setSelectedSurah(selectedSurah > 1 ? selectedSurah - 1 : 1)}
+                  disabled={selectedSurah === 1}
+                  className="px-4 py-2 text-sm font-medium rounded-full bg-primary/10 text-primary hover:bg-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Previous Surah
+                </button>
+                <button
+                  onClick={() => setSelectedSurah(selectedSurah < 114 ? selectedSurah + 1 : 114)}
+                  disabled={selectedSurah === 114}
+                  className="px-4 py-2 text-sm font-medium rounded-full bg-primary/10 text-primary hover:bg-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Next Surah
+                </button>
+              </div>
+            </div>
 
             {detailsLoading || !surahDetailsData ? (
               <div className="space-y-6">
@@ -222,6 +263,22 @@ export function QuranReader() {
                       />
                     );
                   })}
+                </div>
+                
+                <div className="flex justify-center pt-8 border-t border-card-border mt-12">
+                  <button
+                    onClick={() => {
+                      if (selectedSurah < 114) {
+                        setSelectedSurah(selectedSurah + 1);
+                        window.scrollTo({ top: document.getElementById('quran')?.offsetTop, behavior: 'smooth' });
+                      } else {
+                        setSelectedSurah(null);
+                      }
+                    }}
+                    className="px-6 py-3 text-sm font-medium rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+                  >
+                    {selectedSurah < 114 ? "Continue to Next Surah" : "Return to Surah List"}
+                  </button>
                 </div>
               </>
             )}
